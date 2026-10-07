@@ -1,0 +1,50 @@
+# Gradle / Kotlin
+.gradle
+.kotlin
+**/build/
+!src/**/build/
+*.hprof
+
+# Android / Android Studio
+*.iml
+.idea
+captures
+.externalNativeBuild
+.cxx
+local.properties
+*.jks
+*.keystore
+
+# Xcode / iOS
+xcuserdata
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+DerivedData/
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+!default.perspectivev3
+*.xccheckout
+*.xcscmblueprint
+
+# CocoaPods / Swift Package Manager (if ever added)
+Pods/
+.build/
+
+# Fastlane (if ever added)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Secrets / local env
+*.env
+.env*
+
+# Misc
+.DS_Store
+node_modules/
