@@ -1,35 +1,43 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# AndalBus
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+Kotlin Multiplatform project targeting Android and iOS.
 
-* [/sharedLogic](./sharedLogic/src) is for the code that will be shared between app targets in the project.
-  The most important subfolder is [commonMain](./sharedLogic/src/commonMain/kotlin). If preferred, you
-  can add code to the platform-specific folders here too.
+The target architecture is native UI per platform (Jetpack Compose on Android, SwiftUI on
+iOS), sharing code up to the presentation layer (ViewModel + UiState) — **not implemented
+yet**. Today this is the KMP wizard scaffold plus git/CI/lint tooling. See
+[CLAUDE.md](CLAUDE.md) for the up-to-date state of the project and its conventions.
 
-* [/sharedUI](./sharedUI/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./sharedUI/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./sharedUI/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./sharedUI/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## Modules
 
-### Running the apps
+- [`androidApp`](./androidApp) — Android app (Jetpack Compose). Depends on `sharedUI`.
+- [`sharedUI`](./sharedUI) — Android-only UI module (wizard demo screen).
+- [`sharedLogic`](./sharedLogic) — Kotlin Multiplatform module (Android + iOS). Wizard demo
+  code; this is where shared logic should grow.
+- [`iosApp`](./iosApp) — Xcode project with native SwiftUI, links `sharedLogic`.
+- [`build-logic`](./build-logic) — included build with convention plugins for future
+  domain/data/presentation/UI modules (currently empty, not yet applied anywhere).
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+## Running the apps
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+- Android: `./gradlew :androidApp:assembleDebug`, or run from Android Studio.
+- iOS: open [`iosApp/iosApp.xcodeproj`](./iosApp/iosApp.xcodeproj) in Xcode and run from there.
 
-### Running tests
+## Running tests
 
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
+- Android (common + Android-specific): `./gradlew :sharedLogic:testAndroidHostTest :sharedUI:testAndroidHostTest`
+- iOS (requires macOS/Xcode): `./gradlew :sharedLogic:iosSimulatorArm64Test`
 
-- Android tests: `./gradlew :sharedUI:testAndroidHostTest :sharedLogic:testAndroidHostTest`
-- iOS tests: `./gradlew :sharedLogic:iosSimulatorArm64Test`
+## Code quality
+
+- `./gradlew ktlintCheck` / `./gradlew ktlintFormat` — Kotlin style (config: `.editorconfig`).
+- `./gradlew detekt` — static analysis (config: `config/detekt/detekt.yml`).
+
+## CI
+
+A single GitHub Actions workflow ([`.github/workflows/pr.yml`](.github/workflows/pr.yml)) runs
+ktlint, detekt, and the Android build/tests on every PR. It does not build or test anything
+iOS-related yet.
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html).
