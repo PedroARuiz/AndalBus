@@ -1,0 +1,19 @@
+name: PR Checks
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Build and test (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      # iOS (Kotlin/Native) targets need macOS/Xcode and are not built here yet -
+      # scoped to Android to avoid burning macOS runner minutes for now.
+      - run: ./gradlew :androidApp:build :sharedLogic:testAndroidHostTest :sharedUI:testAndroidHostTest
