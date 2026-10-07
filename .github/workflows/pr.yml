@@ -16,4 +16,4 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       # iOS (Kotlin/Native) targets need macOS/Xcode and are not built here yet -
       # scoped to Android to avoid burning macOS runner minutes for now.
-      - run: ./gradlew :androidApp:build :sharedLogic:testAndroidHostTest :sharedUI:testAndroidHostTest
+      - run: ./gradlew ktlintCheck detekt :androidApp:build :sharedLogic:testAndroidHostTest :sharedUI:testAndroidHostTest
