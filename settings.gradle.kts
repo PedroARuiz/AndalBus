@@ -1,6 +1,7 @@
 rootProject.name = "AndalBus"
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             mavenContent {
